@@ -1,5 +1,6 @@
 package com.example.taskmanager;
 import org.springframework.stereotype.Service;
+import com.example.taskmanager.exception.TaskNotFoundException;
 import java.util.*;
 
 /**
@@ -30,35 +31,39 @@ public class TaskManager {
     /**
      * Retrieves a task by its unique ID.
      * @param id The ID of the task.
-     * @return The Task object if found, otherwise null.
+     * @return The Task object if found.
+     * @throws TaskNotFoundException if the task is not found.
      */
     public Task getTaskById(int id) {
         for (Task t : tasks) {
             if (t.getId() == id) return t;
         }
-        return null;
+        throw new TaskNotFoundException("Task with id " + id + " not found.");
     }
 
     /**
      * Removes a task by its unique ID.
      * @param id The ID of the task to remove.
-     * @return True if the task was removed, false if not found.
+     * @return True if the task was removed.
+     * @throws TaskNotFoundException if the task is not found.
      */
     public boolean removeTask(int id) {
-        return tasks.removeIf(t -> t.getId() == id);
+        boolean removed = tasks.removeIf(t -> t.getId() == id);
+        if (!removed) {
+            throw new TaskNotFoundException("Task with id " + id + " not found.");
+        }
+        return true;
     }
 
     /**
      * Marks a task as completed by its unique ID.
      * @param id The ID of the task to mark as completed.
-     * @return True if the task was found and marked as completed, false otherwise.
+     * @return True if the task was found and marked as completed.
+     * @throws TaskNotFoundException if the task is not found.
      */
     public boolean markTaskCompleted(int id) {
         Task t = getTaskById(id);
-        if (t != null) {
-            t.setCompleted(true);
-            return true;
-        }
-        return false;
+        t.setCompleted(true);
+        return true;
     }
 }
