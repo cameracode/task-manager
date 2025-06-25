@@ -1,5 +1,6 @@
 package com.example.taskmanager;
 import org.springframework.stereotype.Service;
+import com.example.taskmanager.exception.TaskNotFoundException;
 import java.util.*;
 
 /**
@@ -64,14 +65,5 @@ public class TaskManager {
         Task t = getTaskById(id);
         t.setCompleted(true);
         return true;
-    }
-
-    /**
-     * Custom exception for not found tasks.
-     */
-    public static class TaskNotFoundException extends RuntimeException {
-        public TaskNotFoundException(String message) {
-            super(message);
-        }
     }
 }
