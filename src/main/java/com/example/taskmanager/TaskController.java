@@ -1,6 +1,8 @@
 package com.example.taskmanager;
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 @RestController
@@ -23,12 +25,20 @@ public class TaskController {
     }
 
     @PutMapping("/{id}/complete")
-    public boolean completeTask(@PathVariable int id) {
-        return manager.markTaskCompleted(id);
+    public void completeTask(@PathVariable int id) {
+        manager.markTaskCompleted(id);
     }
 
     @DeleteMapping("/{id}")
-    public boolean removeTask(@PathVariable int id) {
-        return manager.removeTask(id);
+    public void removeTask(@PathVariable int id) {
+        manager.removeTask(id);
+    }
+
+    /**
+     * Handles TaskNotFoundException and returns a 404 response.
+     */
+    @ExceptionHandler(TaskManager.TaskNotFoundException.class)
+    public ResponseEntity<String> handleTaskNotFound(TaskManager.TaskNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 }
