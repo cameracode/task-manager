@@ -6,7 +6,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/tasks")
 public class TaskController {
-    private final TaskManager manager = new TaskManager();
+    private final TaskManager manager;
+
+    public TaskController(TaskManager manager) {
+        this.manager = manager;
+    }
 
     @GetMapping
     public List<Task> getTasks() {
