@@ -1,9 +1,11 @@
 package com.example.taskmanager;
+import org.springframework.stereotype.Service;
 import java.util.*;
 
 /**
  * Manages a list of tasks, providing methods to add, retrieve, update, and remove tasks.
  */
+@Service
 public class TaskManager {
     private List<Task> tasks = new ArrayList<>();
     private int nextId = 1;
