@@ -28,6 +28,7 @@ public class TaskControllerTest {
         when(manager.getTasks()).thenReturn(Arrays.asList(new Task(1, "A", "B", false)));
         mockMvc.perform(get("/api/tasks"))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[0].title").value("A"));
     }
 
@@ -54,5 +55,22 @@ public class TaskControllerTest {
         mockMvc.perform(delete("/api/tasks/99"))
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("not found"));
+    }
+
+    @Test
+    void testCompleteTaskSuccess() throws Exception {
+        // No exception thrown means success
+        when(manager.markTaskCompleted(1)).thenReturn(true);
+        mockMvc.perform(put("/api/tasks/1/complete"))
+                .andExpect(status().isOk());
+        verify(manager).markTaskCompleted(1);
+    }
+
+    @Test
+    void testRemoveTaskSuccess() throws Exception {
+        when(manager.removeTask(1)).thenReturn(true);
+        mockMvc.perform(delete("/api/tasks/1"))
+                .andExpect(status().isOk());
+        verify(manager).removeTask(1);
     }
 } 
