@@ -1,4 +1,4 @@
-package main.java.com.example.taskmanager;
+package com.example.taskmanager;
 /**
  * Represents a task with an id, title, description, and completion status.
  */
