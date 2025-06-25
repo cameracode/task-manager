@@ -8,6 +8,7 @@ A full-stack Task Manager application with a Java Spring Boot REST API backend a
 - Add, list, complete, and remove tasks
 - RESTful API (Spring Boot)
 - Modern React frontend with Tailwind CSS styling
+- **Interactive API documentation with Swagger/OpenAPI**
 
 ---
 
@@ -39,6 +40,29 @@ The API will be available at: `http://localhost:8080/api/tasks`
   "description": "Details"
 }
 ```
+
+---
+
+## API Documentation: Swagger / OpenAPI
+
+This project uses [Swagger UI](https://swagger.io/tools/swagger-ui/) via [springdoc-openapi](https://springdoc.org/) for interactive API documentation.
+
+### Installation
+Add the following dependency to your `pom.xml`:
+```xml
+<dependency>
+  <groupId>org.springdoc</groupId>
+  <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+  <version>2.5.0</version>
+</dependency>
+```
+
+### Usage
+After starting the backend, access the Swagger UI at:
+- [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+- or [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+
+You can view and test all API endpoints directly from the browser.
 
 ---
 
