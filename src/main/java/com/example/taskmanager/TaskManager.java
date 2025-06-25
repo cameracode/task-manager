@@ -1,4 +1,4 @@
-package main.java.com.example.taskmanager;
+package com.example.taskmanager;
 import java.util.*;
 
 /**
