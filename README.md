@@ -1,13 +1,13 @@
 # TaskManager
 
-A full-stack Task Manager application with a Java Spring Boot REST API backend and a React + Tailwind CSS frontend.
+A full-stack Task Manager application with a Java Spring Boot REST API backend and a **Next.js + TypeScript + Tailwind CSS v4** frontend.
 
 ---
 
 ## Features
 - Add, list, complete, and remove tasks
 - RESTful API (Spring Boot)
-- Modern React frontend with Tailwind CSS styling
+- Modern **Next.js** frontend with **TypeScript** and **Tailwind CSS v4** styling
 - **Interactive API documentation with Swagger/OpenAPI**
 - **Comprehensive unit and web layer tests with JUnit and Spring Boot Test**
 
@@ -80,25 +80,37 @@ Maven will automatically find and run all tests in the `src/test/java` directory
 
 ---
 
-## Frontend: React + Tailwind CSS
+## Frontend: Next.js + TypeScript + Tailwind CSS v4
+
+### Requirements
+- Node.js 18+
+- npm (or yarn)
 
 ### Setup & Run
 ```sh
 # In the frontend directory
 npm install
-npm start
+npm run dev
 ```
 The frontend will be available at: `http://localhost:3000`
 
+### Project Structure
+- Uses the Next.js **App Router** (`src/app/`)
+- TypeScript for type safety
+- Tailwind CSS v4 for utility-first styling
+- Place static assets in `frontend/public/`
+- Place global styles in `src/styles/globals.css`
+
 ### Tailwind CSS
-Tailwind is already configured in `taskmanager-frontend`. Use utility classes in your React components for styling.
+Tailwind is already configured. Use utility classes in your React components for styling. The config files are:
+- `tailwind.config.js`
+- `postcss.config.js`
 
----
-
-## Development Notes
-- Follow standard Maven project structure for best compatibility.
-- Use environment variables and `.env` files for configuration when needed.
-- PRs and issues are welcome!
+### Development Notes
+- Use the `src/api/` folder for API utilities to connect to the backend.
+- Use the `src/components/` folder for React components.
+- Use the `src/types/` folder for TypeScript types (e.g., `Task`).
+- Environment variables can be set in `.env.local`.
 
 ---
 
