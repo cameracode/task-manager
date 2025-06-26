@@ -16,8 +16,10 @@ public class TaskManager {
      * @param title The title of the task.
      * @param description The description of the task.
      */
-    public void addTask(String title, String description) {
-        tasks.add(new Task(nextId++, title, description, false));
+    public Task addTask(String title, String description) {
+        Task newTask = new Task(nextId++, title, description, false);
+        tasks.add(newTask);
+        return newTask;
     }
 
     /**
