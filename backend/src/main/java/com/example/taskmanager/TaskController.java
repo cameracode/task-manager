@@ -36,8 +36,8 @@ public class TaskController {
      * @param task The Task object to add (title and description required).
      */
     @PostMapping
-    public void addTask(@RequestBody Task task) {
-        manager.addTask(task.getTitle(), task.getDescription());
+    public Task addTask(@RequestBody Task task) {
+        return manager.addTask(task.getTitle(), task.getDescription()); // This should return a Task
     }
 
     /**
