@@ -3,12 +3,18 @@ import { useState } from "react";
 import { addTask } from "../api/tasks";
 import { Task } from "../types/Task";
 
+const STATUS_OPTIONS = ["Todo", "Done", "Canceled", "Backlog"];
+const PRIORITY_OPTIONS = ["Low", "Medium", "High"];
+const LABEL_OPTIONS = ["Feature", "Bug", "Documentation"];
+
 /**
  * Form for creating a new task.
  */
-export default function TaskForm({ onTaskAdded }: { onTaskAdded: () => void }) {
+export default function TaskForm({ onTaskAdded, onClose }: { onTaskAdded: () => void; onClose: () => void }) {
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [status, setStatus] = useState(STATUS_OPTIONS[0]);
+  const [priority, setPriority] = useState(PRIORITY_OPTIONS[1]);
+  const [label, setLabel] = useState(LABEL_OPTIONS[0]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -17,9 +23,11 @@ export default function TaskForm({ onTaskAdded }: { onTaskAdded: () => void }) {
     setLoading(true);
     setError(null);
     try {
-      await addTask({ title, description, completed: false });
+      await addTask({ title, status, priority, label, completed: false, description: "" });
       setTitle("");
-      setDescription("");
+      setStatus(STATUS_OPTIONS[0]);
+      setPriority(PRIORITY_OPTIONS[1]);
+      setLabel(LABEL_OPTIONS[0]);
       onTaskAdded();
     } catch (err) {
       setError("Failed to add task.");
@@ -29,38 +37,73 @@ export default function TaskForm({ onTaskAdded }: { onTaskAdded: () => void }) {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="mb-8 p-6 bg-white rounded-2xl shadow-lg border border-gray-100 max-w-xl mx-auto"
-    >
-      <h2 className="text-xl font-semibold mb-4 text-gray-800">Add a New Task</h2>
-      <div className="mb-4 flex flex-col items-center">
-        <input
-          className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 transition max-w-md w-full mx-auto"
-          type="text"
-          placeholder="Task title"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-          required
-        />
-      </div>
-      <div className="mb-6 flex flex-col items-center">
-        <textarea
-          className="border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none transition max-w-md w-full mx-auto"
-          placeholder="Description"
-          value={description}
-          onChange={e => setDescription(e.target.value)}
-          rows={3}
-        />
+    <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Task Title</label>
+          <input
+            className="border border-gray-300 p-2 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+            type="text"
+            placeholder="Task title"
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Task Status</label>
+          <select
+            className="border border-gray-300 p-2 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+            value={status}
+            onChange={e => setStatus(e.target.value)}
+          >
+            {STATUS_OPTIONS.map(opt => (
+              <option key={opt} value={opt}>{opt}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Task Priority</label>
+          <select
+            className="border border-gray-300 p-2 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+            value={priority}
+            onChange={e => setPriority(e.target.value)}
+          >
+            {PRIORITY_OPTIONS.map(opt => (
+              <option key={opt} value={opt}>{opt}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Task Label</label>
+          <select
+            className="border border-gray-300 p-2 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+            value={label}
+            onChange={e => setLabel(e.target.value)}
+          >
+            {LABEL_OPTIONS.map(opt => (
+              <option key={opt} value={opt}>{opt}</option>
+            ))}
+          </select>
+        </div>
       </div>
       {error && <div className="text-red-500 mb-2">{error}</div>}
-      <button
-        type="submit"
-        className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-50 w-full"
-        disabled={loading}
-      >
-        {loading ? "Adding..." : "Add Task"}
-      </button>
+      <div className="flex justify-end gap-2 mt-4">
+        <button
+          type="button"
+          className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300"
+          onClick={onClose}
+        >
+          Close
+        </button>
+        <button
+          type="submit"
+          className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 font-semibold disabled:opacity-50"
+          disabled={loading}
+        >
+          {loading ? "Adding..." : "Add New Task"}
+        </button>
+      </div>
     </form>
   );
 }

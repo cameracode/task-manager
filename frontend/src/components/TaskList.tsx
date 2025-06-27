@@ -9,7 +9,7 @@ import { Task } from '../types/Task';
  * Uses React hooks to manage loading state and data fetching from the backend API.
  * @returns {JSX.Element} The rendered list of tasks or a loading indicator.
  */
-export default function TaskList() {
+export default function TaskList({ refresh }: { refresh?: number }) {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +28,7 @@ export default function TaskList() {
 
   useEffect(() => {
     loadTasks();
-  }, []);
+  }, [refresh]);
 
   const handleComplete = async (id: number) => {
     try {
@@ -52,7 +52,7 @@ export default function TaskList() {
   if (error) return <div className="text-red-500">{error}</div>;
 
   return (
-    <ul className="bg-white rounded shadow p-4">
+    <ul className="bg-white rounded shadow p-4 mt-2 flex flex-col items-center">
       {tasks.map(task => (
         <TaskItem
           key={task.id}

@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import TaskForm from "./TaskForm";
 
-export default function TaskFormModal() {
-  const [showModal, setShowModal] = useState(false);
+export default function TaskFormModal({ showModal, setShowModal, onTaskAdded }: { showModal: boolean; setShowModal: (show: boolean) => void; onTaskAdded: () => void }) {
   const modalRef = useRef<HTMLDivElement>(null);
 
   // ESC key closes modal
@@ -10,9 +9,9 @@ export default function TaskFormModal() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") setShowModal(false);
     };
-    document.addEventListener("keydown", handleKeyDown);
+    if (showModal) document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [showModal, setShowModal]);
 
   // Click outside closes modal
   useEffect(() => {
@@ -23,34 +22,27 @@ export default function TaskFormModal() {
     };
     if (showModal) document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [showModal]);
+  }, [showModal, setShowModal]);
+
+  if (!showModal) return null;
 
   return (
-    <>
-      <button
-        onClick={() => setShowModal(true)}
-        className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold"
+    <div className="fixed inset-0 flex items-center justify-center z-[9999] bg-black bg-opacity-60 backdrop-blur-sm">
+      <div
+        ref={modalRef}
+        className="relative bg-white rounded-xl shadow-2xl max-w-lg w-full p-8 border-4 border-blue-500"
       >
-        Add Task
-      </button>
-
-      {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div
-            ref={modalRef}
-            className="relative bg-white rounded-xl p-6 shadow-xl w-full max-w-xl"
-          >
-            <button
-              onClick={() => setShowModal(false)}
-              className="absolute top-3 right-3 text-gray-500 hover:text-gray-800 text-xl"
-              aria-label="Close modal"
-            >
-              &times;
-            </button>
-            <TaskForm onTaskAdded={() => setShowModal(false)} />
-          </div>
-        </div>
-      )}
-    </>
+        <button
+          onClick={() => setShowModal(false)}
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-2xl font-bold"
+          aria-label="Close modal"
+        >
+          ×
+        </button>
+        <h2 className="text-2xl font-bold text-blue-900 mb-1">Add Task</h2>
+        <div className="text-gray-500 mb-6">Fill in the form to add a task</div>
+        <TaskForm onTaskAdded={onTaskAdded} onClose={() => setShowModal(false)} />
+      </div>
+    </div>
   );
 }
