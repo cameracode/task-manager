@@ -15,7 +15,7 @@ export default function TaskItem({
   onDelete?: (id: number) => void;
 }) {
   return (
-    <li className="flex items-center justify-between p-2 border-b">
+    <li className="flex items-center justify-between p-2 border-b max-w-md w-full mx-auto">
       <span className={task.completed ? "line-through text-gray-400" : ""}>
         {task.title}
         <div className="text-xs text-gray-500">{task.description}</div>

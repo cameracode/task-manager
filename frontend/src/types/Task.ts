@@ -10,4 +10,10 @@ export interface Task {
   description: string;
   /** Whether the task is completed. */
   completed: boolean;
+  /** Status of the task. */
+  status: string;
+  /** Priority of the task. */
+  priority: string;
+  /** Label of the task. */
+  label: string;
 }
